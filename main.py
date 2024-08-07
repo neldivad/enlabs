@@ -44,7 +44,7 @@ def run_app():
       
     st.markdown('#### Where cool people hangout')
     components.html("""
-    <iframe src="https://discord.com/widget?id=1262391807539413022&theme=dark" width="100%" height="500" allowtransparency="true" frameborder="0" sandbox="allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts"></iframe>
+    <iframe src="https://discord.com/widget?id=1262391807539413022&theme=dark" width="100%" height="400" allowtransparency="true" frameborder="0" sandbox="allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts"></iframe>
     """, height=400)
 
 
