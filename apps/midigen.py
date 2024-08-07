@@ -2,7 +2,7 @@ import streamlit as st
 from streamlit import session_state as state
 import musicpy as mp
 
-from utils.app_utils.midi_audio import play_audio
+from utils.app_utils.midi_audio import play_audio, export_to_midi_as_bytes
 
 def main():
     state['song'] = state.get('song', None)
@@ -18,7 +18,14 @@ def main():
 
         play_button = st.button('Play')
         if play_button:
-            play_audio(song)
+            audio = play_audio(song)
+            if audio is not None:
+                st.audio(audio)
+
+            # Generate MIDI bytes
+            midi_fname = f'untitled.mid'
+            midi_bytes = export_to_midi_as_bytes(song)
+            download_midi_no_refresh(midi_fname, midi_bytes)
 
 
 
@@ -126,3 +133,17 @@ def string_to_beat(string='rest(0.1875)'):
     except: 
         raise Exception('Unable to convert string to beat') 
 
+
+
+@st.experimental_fragment
+def download_midi_no_refresh(midi_fname, midi_bytes):
+    """ 
+    st.download_button() refreshes the page. The workaround is to wrap it in a fragment. 
+    It is possible for the first download to fail.
+    """
+    st.download_button(
+        label='Download MIDI', 
+        data=midi_bytes, 
+        file_name=midi_fname, 
+        mime='audio/midi'
+    )
