@@ -57,29 +57,37 @@ def form_part():
 
         c1, c2 = st.columns([1,1])
         with c1: 
-            selected_bpm = st.slider('BPM', min_value=50, max_value=200, value=120)
-            selected_melody_instrument = st.selectbox('Melody Instrument', options=list(mp.database.INSTRUMENTS.keys()), index=6)
+            selected_bpm = st.slider('BPM', min_value=50, max_value=200, value=120, help='BPM, determines the speed of the song')
+            selected_melody_instrument = st.selectbox('Melody Instrument', options=list(mp.database.INSTRUMENTS.keys()), index=6, help='Select the instrument for the melody')
         with c2:
-            selected_length = st.slider('Length', min_value=10, max_value=30, value=10)
-            selected_chord_instrument = st.selectbox('Chord Instrument', options=list(mp.database.INSTRUMENTS.keys()), index=0)
+            selected_length = st.slider('Length', min_value=10, max_value=30, value=10, help='Length of the song in bars')
+            selected_chord_instrument = st.selectbox('Chord Instrument', options=list(mp.database.INSTRUMENTS.keys()), index=0, help='Select the instrument for the arpegiator/chord')
 
         st.divider()
         st.write('Chord parameters')
         c1, c2 = st.columns([1,1])
         with c1:
-            selected_progression = st.selectbox('Select chord progression', options=AVAILABLE_PROGRESSIONS)
+            selected_progression = st.selectbox('Select chord progression', options=AVAILABLE_PROGRESSIONS, help='4 bar or 8 bar chord progression. Numbers represent the chord degree in scale.')
         with c2:
-            selected_chord_duration = st.selectbox('Select chord duration', options=[1/2, 1, 2], index=0)
-        selected_chord_intervals = st.multiselect('Select chord interval', options=AVAILABLE_CHORD_INTERVALS, default=[1/8, 0])
+            selected_chord_duration = st.selectbox('Select chord duration', options=[1/2, 1, 2], index=0, help='Duration of chord before it cycles to the next chord')
+        selected_chord_intervals = st.multiselect('Select chord interval', options=AVAILABLE_CHORD_INTERVALS, default=[1/8, 0], help='Longer duration means slower arpegiator. Zero means chord has all notes played at once. Randomized in list.')
 
 
         st.divider()
         st.write('Melody parameters')
-        selected_melody_octave= st.selectbox('Melody relative pitch', options=[-1, 0, 1, 2], index=1)
+        selected_melody_octave= st.selectbox('Melody relative pitch', options=[-1, 0, 1, 2], index=1, help='Melody notes are played at a higher or lower octave than the chord. Negative numbers are lower, positive numbers are higher.')
 
         rest_list = [f'rest({duration})' for duration in AVAILABLE_DURATIONS]
         melody_duration_options = AVAILABLE_DURATIONS + rest_list
-        selected_melody_durations = st.multiselect('Select melody duration', options=melody_duration_options, default=[0.1875, 0.375, 'rest(0.1875)'])
+        selected_melody_durations = st.multiselect('Select melody duration', options=melody_duration_options, default=[0.1875, 0.375, 'rest(0.1875)'], help='Duration of melody notes. Rests are used to create a rest between notes. Randomized in list.')
+
+        st.divider()
+        st.write('Bass parameters')
+        st.info('Not implemented yet') 
+
+        st.divider()
+        st.write('Drums parameters')
+        st.info('Not implemented yet')
 
         submit_button = st.form_submit_button('Submit')
     
