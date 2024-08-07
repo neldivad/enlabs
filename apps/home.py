@@ -5,7 +5,7 @@ import streamlit.components.v1 as components
 def main():
     st.write("""
         Welcome to the MIDI Generator app! This app allows you to create custom MIDI files by selecting various musical parameters.
-        Follow the tutorials below to get started, or dive right in using the MIDI Generator.
+        Follow the tutorials below to get started, or dive right in using the MIDI Generator. 
     """)
 
     st.subheader('Features')
