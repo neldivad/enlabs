@@ -8,6 +8,9 @@ def main():
     state['song'] = state.get('song', None)
     st.title('MIDI Generator') 
 
+    with st.expander('Help', expanded=False):
+        confused()
+
     with st.expander('MIDI Generator', expanded=True):
         form_part()
 
@@ -92,6 +95,13 @@ def form_part():
         submit_button = st.form_submit_button('Submit')
     
     if submit_button:
+        if selected_melody_durations == []:
+            st.error('You need to select at least one melody duration')
+            return
+        if selected_chord_intervals == []:
+            st.error('You need to select at least one chord interval')
+            return
+
         st.write(f'You selected the key {selected_key} and the mode {selected_mode}')
         s = mp.scale(selected_key, selected_mode)
         st.write(s)
@@ -126,6 +136,11 @@ def form_part():
 
     
 
+def confused():
+    st.warning("Don't know what to do?")
+
+    st.markdown(help_md)
+    pass 
 
 
 
@@ -155,3 +170,24 @@ def download_midi_no_refresh(midi_fname, midi_bytes):
         file_name=midi_fname, 
         mime='audio/midi'
     )
+
+
+help_md="""
+> Oh no, so much buttons and sliders!
+
+- **Just click submit and see what happens**
+    - You learn how to tweak knobs better after you hear it. 
+
+- **Change key, mode, and chord progression**
+    - This is the part where the biggest differences between songs come from. You are highly encouraged to look up the music theory of key, mode, and chord progression. 
+
+- **Add/remove intervals in chord, melody**
+
+    - Algorithm randomly choose an interval after a note was played from arpegiator or melody. If you want to experience more variance in melody, you can change up the intervals. 
+For better results, use abnormal time signatures like 3/8, 5/8 (there is a music theory behind why this is). Adding rests to the melody also makes it more natural. 
+
+- **Change BPM, length, and instruments**
+
+    - BPM is the speed of the song. Length is the number of bars. Instruments are the instruments used in the song. 
+Maybe music theory and math isn't your thing. You just like hearing sounds made by different objects in different pace. 
+"""
