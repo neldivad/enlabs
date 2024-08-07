@@ -1,5 +1,6 @@
 import streamlit as st
 from streamlit import session_state as state
+import streamlit.components.v1 as components
 import hydralit as hy
 
 import os
@@ -8,11 +9,14 @@ from utils.app_utils.startapp import check_pygame_compatibility
 
 
 st.set_page_config(
-  page_title="MIDI Generator",
-  page_icon=None,
+  page_title="ENLabs - Enhancing Artists With Software",
+  page_icon='assets/n-mark-color.png',
   layout="wide",
   initial_sidebar_state="collapsed",
 )
+
+over_theme = {'txc_inactive': '#FFFFFF', 'txc_active':'#A9DEF9'}
+navbar_theme = {'txc_inactive': '#FFFFFF','txc_active':'grey','menu_background':'white','option_active':'blue'}
 
 
 #---Start app---#
@@ -31,6 +35,18 @@ def run_app():
       if st.button('Stop all sounds'):
         mp.stopall()
 
+    with st.expander('About'):
+      st.info('A project by FeltAudio and NelStudio')
+      st.write('Version: 0.0.1')
+
+      st.write(""":large_blue_square: [Twitter](https://twitter.com/just_neldivad)""")
+      st.markdown(""":notebook: [GitHub](https://github.com/neldivad)""")
+      
+    st.markdown('#### Where cool people hangout')
+    components.html("""
+    <iframe src="https://discord.com/widget?id=1262391807539413022&theme=dark" width="100%" height="500" allowtransparency="true" frameborder="0" sandbox="allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts"></iframe>
+    """, height=400)
+
 
 
 
@@ -39,6 +55,7 @@ def run_app():
     use_navbar=True, 
     navbar_sticky=False,
     navbar_animation=True,
+    navbar_theme=over_theme,
   )
 
   #specify a custom loading app for a custom transition between apps, this includes a nice custom spinner
