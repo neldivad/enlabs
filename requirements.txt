@@ -11,6 +11,8 @@ soundfile==0.12.1
 
 setuptools==70.1.0
 wheel==0.43.0
+pandas==2.2.2
+plotly==5.22.0
 
 hydralit==1.0.14
 hydralit_components==1.0.10
