@@ -19,7 +19,7 @@ def main():
         song = state['song']
         with st.expander('MIDI Player', expanded=True):
             st.write(song)
-            fig = plot_chords(song)
+            fig = plot_chords(song, end_time=None)
             st.plotly_chart(fig, use_container_width=True)
 
         play_button = st.button('Play')
