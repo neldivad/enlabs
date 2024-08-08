@@ -3,6 +3,7 @@ from streamlit import session_state as state
 import musicpy as mp
 
 from utils.app_utils.midi_audio import play_audio, export_to_midi_as_bytes
+from utils.plotting import plot_chords
 
 def main():
     state['song'] = state.get('song', None)
@@ -18,6 +19,8 @@ def main():
         song = state['song']
         with st.expander('MIDI Player', expanded=True):
             st.write(song)
+            fig = plot_chords(song)
+            st.plotly_chart(fig, use_container_width=True)
 
         play_button = st.button('Play')
         if play_button:
