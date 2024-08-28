@@ -21,3 +21,5 @@ numpy==1.26.4
 python-dotenv==1.0.1
 
 streamlit==1.36.0
+streamlit-aggrid==1.0.5
+streamlit-antd-components==0.3.2

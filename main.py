@@ -78,6 +78,11 @@ def run_app():
     from apps.songgen import main
     main()
 
+  @app.addapp(title='MIDI Parser')
+  def midiParserApp():
+    from apps.midi_parser import main
+    main()
+
 
   #--- Level 1 apps ---#
   if user_level < 2: 
@@ -98,6 +103,7 @@ def run_app():
     # Other apps
     complex_nav["Create MIDI"] = ['Create MIDI']
     complex_nav["Song"] = ['Song']
+    complex_nav["Parser"] = ['MIDI Parser']
 
     return complex_nav
   

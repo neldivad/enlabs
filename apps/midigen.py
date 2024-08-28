@@ -90,11 +90,11 @@ def form_part():
 
         st.divider()
         st.write('Bass parameters')
-        st.info('Not implemented yet') 
+        with_bass = st.checkbox('Bass', value=True)
 
         st.divider()
         st.write('Drums parameters')
-        st.info('Not implemented yet')
+        with_drums = st.checkbox('Drums', value=True)
 
         submit_button = st.form_submit_button('Submit')
     
@@ -135,6 +135,9 @@ def form_part():
             default_chord_durations=selected_chord_duration,
             choose_chord_intervals=selected_chord_intervals,
             choose_melody_durations=melody_durations,
+
+            with_drum_beats=with_drums,
+            with_bass=with_bass,
         )
         state['song'] = song
 
