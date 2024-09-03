@@ -174,7 +174,8 @@ def select_chord_params_form():
         st.write('Chord parameters')
         c1, c2 = st.columns([1,1])
         with c1:
-            selected_progression = st.selectbox('Select chord progression', options=AVAILABLE_PROGRESSIONS, help='4 bar or 8 bar chord progression. Numbers represent the chord degree in scale.')
+            # selected_progression = st.selectbox('Select chord progression', options=AVAILABLE_PROGRESSIONS, help='4 bar or 8 bar chord progression. Numbers represent the chord degree in scale.')
+            selected_progression = st.text_input('Enter chord progression', value='45634561', placeholder='1245', help='4 bar or 8 bar chord progression. Numbers represent the chord degree in scale.')
         with c2:
             selected_chord_duration = st.selectbox('Select chord duration', options=[1/2, 1, 2], index=0, help='Duration of chord before it cycles to the next chord')
         selected_chord_intervals = st.multiselect('Select chord interval', options=AVAILABLE_CHORD_INTERVALS, default=[1/8, 0], help='Longer duration means slower arpegiator. Zero means chord has all notes played at once. Randomized in list.')

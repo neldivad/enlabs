@@ -76,9 +76,9 @@ def transcribe_piece_to_wav(piece):
     return virtualfile
 
 
+    
 
-
-def play_audio(audio_data, is_file=False):
+def play_audio(audio_data, is_file=False, bpm=120):
     """ 
     Plays sound or returns an audio obj
     """
@@ -86,7 +86,7 @@ def play_audio(audio_data, is_file=False):
         st.session_state['pygame_compatible'] = check_pygame_compatibility()
 
     if st.session_state['pygame_compatible']:
-        mp.play(audio_data)
+        mp.play(audio_data, bpm=bpm)
         return None
         
     else:
