@@ -56,23 +56,77 @@ METAL_DRUMS = {42, 44, 46, 49, 51}  # Hi-hats, crash cymbals
 
 RHYTHM_VARIANTS = [
     {
-        'name': 'quarter',
+        'name': 'Quarter',
         'rhythm': 'b b b b',
         'bars': 1,
+        'time_signature': '4/4',
     },
     {
-        'name': 'eighth',
+        'name': 'Eighth',
         'rhythm': 'b b b b b b b b',
         'bars': 1,
+        'time_signature': '4/4',
     }, 
     {
-        'name': 'tresillo',
+        'name': 'Tresillo',
         'rhythm': 'b - - b - - b b',
         'bars': 1,
+        'time_signature': '4/4',
     },
     {
-        'name': 'double tresillo',
+        'name': 'Double Tresillo',
         'rhythm': 'b 0 0 b 0 0 b 0 0 b 0 0 b 0 b 0',
         'bars': 2,
+        'time_signature': '4/4',
+    },
+    {
+        'name': 'Gallop',
+        'rhythm': 'b 0 b b b 0 b b',
+        'bars': 1,
+        'time_signature': '4/4',
+    },
+    {
+        'name': 'Habanera',
+        'rhythm': 'b 0 0 b b 0 b 0',
+        'bars': 1,
+        'time_signature': '4/4',
+    },
+    {
+        'name': 'Barbara Ann',
+        'rhythm': 'b 0 b 0 b 0 0 b 0 b 0 b b 0 b 0',
+        'bars': 2,
+        'time_signature': '4/4',
+    },
+    {
+        'name': 'Aksak 9/8',
+        'rhythm': 'b 0 b 0 b 0 b 0 0',
+        'bars': 1,
+        'time_signature': '9/8',
+    },
+    {
+        'name': 'Son Clave',
+        'rhythm': 'b 0 0 b 0 0 b 0 0 0 b 0 b 0 0 0',
+        'bars': 2,
+        'time_signature': '4/4',
+    },
+    {
+        'name': 'Bossa Nova',
+        'rhythm': 'b 0 0 b 0 0 b 0 0 0 b 0 0 b 0 0',
+        'bars': 2,
+        'time_signature': '4/4',
+    },
+    {
+        'name': 'Mission Impossible 5/4',
+        'rhythm': 'b 0 0 b 0 0 b 0 b 0',
+        'bars': 1,
+        'time_signature': '5/4',
+    },
+    {
+        'name': 'Football Clap',
+        'rhythm': 'b 0 b 0 b b b 0 b b b b 0 b b 0',
+        'bars': 2,
+        'time_signature': '4/4',
     },
 ]
+
+

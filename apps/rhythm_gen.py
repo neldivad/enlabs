@@ -44,7 +44,7 @@ def main():
 def chord_form_part():
     rhythm_name_map = {rhythm['name']: rhythm for rhythm in RHYTHM_VARIANTS} # {'name': 'quarter', 'rhythm': 'b b b b', 'bars': 1} >> {'quarter': {'name': 'quarter', 'rhythm': 'b b b b', 'bars': 1}}
 
-    selected_ts = st.selectbox('Select Time Signature', options=['3/4', '4/4'], index=1, help='Warning: Changing time signature may cause errors. Currently only supports 4/4')
+    selected_ts = st.selectbox('Select Time Signature', options=[None, '3/4', '4/4'], index=0, help='Warning: Changing time signature may cause errors. Currently only supports 4/4')
 
     c1,c2,c3 = st.columns([1,1,1])
     with c1:
@@ -68,13 +68,18 @@ def chord_form_part():
             state['r_select_chord']['bars'] = rhythm_name_map[selected_rhythm]['bars']
         else:
             state['r_select_chord']['bars'] = selected_bars
+
+        if selected_ts in ['None', None, '', 0]:
+            state['r_select_chord']['time_signature'] = rhythm_name_map[selected_rhythm]['time_signature']
+        else:
+            state['r_select_chord']['time_signature'] = selected_ts
+
         state['r_select_chord']['key'] = selected_key
         state['r_select_chord']['chord'] = selected_chord
         state['r_select_chord']['inversion'] = selected_inversion
         state['r_select_chord']['rhythm_name'] = selected_rhythm
         state['r_select_chord']['rhythm'] = rhythm_name_map[selected_rhythm]['rhythm']
         state['r_select_chord']['accented'] = selected_accent
-        state['r_select_chord']['time_signature'] = selected_ts
         st.rerun()
 
 
@@ -94,7 +99,7 @@ def rhythm_chord_part():
 
     chd = generate_rhythm_for_chord(chord=chord_obj, rhythm=rstr, bars=bars, accent=accent)
     if st.button('Play'):
-        audio = play_audio(chd)
+        audio = play_audio(chd*4)
         if audio is not None:
             st.audio(audio)
         
