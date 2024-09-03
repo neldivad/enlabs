@@ -56,15 +56,23 @@ METAL_DRUMS = {42, 44, 46, 49, 51}  # Hi-hats, crash cymbals
 
 RHYTHM_VARIANTS = [
     {
-        "rhythm": "b b b b b b b b" ,
-        "bars": 1
+        'name': 'quarter',
+        'rhythm': 'b b b b',
+        'bars': 1,
     },
     {
-        "rhythm": "b 0 0 b 0 b 0 b 0 b b 0 b 0 b 0",
-        "bars": 2
+        'name': 'eighth',
+        'rhythm': 'b b b b b b b b',
+        'bars': 1,
+    }, 
+    {
+        'name': 'tresillo',
+        'rhythm': 'b - - b - - b b',
+        'bars': 1,
     },
     {
-        "rhythm": "b 0 0 b 0 b b 0" ,
-        "bars": 1
+        'name': 'double tresillo',
+        'rhythm': 'b 0 0 b 0 0 b 0 0 b 0 0 b 0 b 0',
+        'bars': 2,
     },
 ]

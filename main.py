@@ -78,6 +78,11 @@ def run_app():
     from apps.songgen import main
     main()
 
+  @app.addapp(title='Rhythm')
+  def rhythmGenApp():
+    from apps.rhythm_gen import main
+    main()
+
 
   #--- Level 1 apps ---#
   if user_level < 2: 
@@ -98,6 +103,7 @@ def run_app():
     # Other apps
     complex_nav["Create MIDI"] = ['Create MIDI']
     complex_nav["Song"] = ['Song']
+    complex_nav["Rhythm"] = ['Rhythm']
 
     return complex_nav
   

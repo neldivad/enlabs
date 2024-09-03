@@ -95,3 +95,18 @@ def play_audio(audio_data, is_file=False):
         else:
             audio = transcribe_piece_to_wav(audio_data)
         return audio
+    
+
+
+@st.experimental_fragment
+def download_midi_no_refresh(midi_fname, midi_bytes):
+    """ 
+    st.download_button() refreshes the page. The workaround is to wrap it in a fragment. 
+    It is possible for the first download to fail.
+    """
+    st.download_button(
+        label='Download MIDI', 
+        data=midi_bytes, 
+        file_name=midi_fname, 
+        mime='audio/midi'
+    )
