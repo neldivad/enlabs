@@ -55,11 +55,11 @@ def chord_form_part():
         selected_inversion = st.selectbox('Select Inversion', [None, 1,2])
 
     with c1:
-        selected_rhythm = st.selectbox('Select rhythm', rhythm_name_map) 
+        selected_rhythm = st.selectbox('Select rhythm', rhythm_name_map, index=2, help="Check JSON to view the beat. No support for custom rhythm for now.") 
     with c2: 
-        selected_bars = st.number_input('Select number of bars', min_value=0, max_value=8, value=None)
+        selected_bars = st.number_input('Select number of bars', min_value=0, max_value=8, value=None, help="Tries to fit the rhythm within a range of selected bar")
     with c3:
-        selected_accent = st.selectbox('Accented', options=[True, False])
+        selected_accent = st.selectbox('Accented', options=[True, False], help="Replaces all rests and sustains with beats and lowers velocity if true.")
 
     submit_button = st.button(label='Generate rhythm for chord')
 
@@ -74,6 +74,7 @@ def chord_form_part():
         state['r_select_chord']['rhythm_name'] = selected_rhythm
         state['r_select_chord']['rhythm'] = rhythm_name_map[selected_rhythm]['rhythm']
         state['r_select_chord']['accented'] = selected_accent
+        state['r_select_chord']['time_signature'] = selected_ts
         st.rerun()
 
 
