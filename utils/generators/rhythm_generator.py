@@ -1,7 +1,7 @@
 import musicpy as mp
 
 
-def generate_rhythm_for_chord(chord, rhythm:str, bars:int=1, accent:bool=False, high_volume:int=80, low_volume:int=50):
+def generate_rhythm_for_chord(chord, rhythm:str, bars:int=1, accent:bool=False, high_volume:int=100, low_volume:int=80):
     """ 
     Applies rhythm to chord obj.
     If accent is True, replaces all rest and sustain with beat, but beat velocity is set lower. 

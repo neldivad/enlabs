@@ -55,6 +55,156 @@ def voice_2_chords(chord1, chord2, note_as_string:bool=False):
 
 
 
+def lengthen_note_duration_in_chord(chord, duration:float=0.125):
+    """
+    Lengthens the duration of all notes in the chord by the given duration.
+    
+    chord: mp.chord
+        The chord object to lengthen.
+
+    duration: float
+        The duration to lengthen the notes by.
+
+    Returns:
+        mp.chord
+            The chord object with the notes lengthened.
+    """
+    new_chord = chord.copy()
+    original_bars = chord.bars()
+    for note in new_chord.notes:
+        note.duration = duration
+    new_chord.cut(ind1=0, ind2=original_bars, cut_extra_duration=True, cut_extra_interval=True, round_duration=True, round_cut_interval=True)
+    return new_chord
+
+
+
+
+
+
+def detect_chord_name(chord_obj):
+    """
+    Infers the chord name from the chord object. 
+
+    chord_obj: mp.chord
+        The chord object to infer the chord name from.
+
+    Returns:
+        str
+            The chord name.
+    """
+    # Infer chord
+    notes = [str(n) for n in chord_obj.notes]
+    chord_str = ','.join(notes)
+    detected_chord = mp.alg.detect(chord_str, root_preference=True)
+
+    if '/' in detected_chord:
+        chord_candidates = detected_chord.split('/')
+
+        # slash is between 2 bracket chords, eg [Em]/[Cm]
+        if any('[' in segment or ']' in segment for segment in chord_candidates):
+            print(f"Ambiguous chord detected: {detected_chord}")
+            chord_candidates = [segment.replace('[', '').replace(']', '') for segment in chord_candidates]
+            chord_candidates = [segment.split()[0] for segment in chord_candidates]
+
+            # Exclude any candidates that are notes
+            chord_candidates = [c for c in chord_candidates if not c.lower().startswith('note')]
+
+            # If no valid chord candidates are found, default to the first note if it's the only option
+            if not chord_candidates:
+                detected_chord = chord_str.split()[0] if len(chord_str.split()) == 1 else chord_candidates[0]
+            else:
+                detected_chord = min(chord_candidates, key=len).strip()
+            print(f'Resolved ambiguous chord: {detected_chord}')
+
+    else:
+        # this is an inversion EG: Cmin/G
+        pass
+    
+    short_chord = detected_chord.split()[0] # eg: 'Cmaj7'
+    return short_chord
+
+
+
+def accenting_rhythm_chord(chord, rhythm, bars, high_volume:int=80, low_volume:int=60, bounce_low_notes:bool=False, bounce_pattern:str='fifth'):
+    """ 
+    Instead of applying rhythm to a chord, replaces all rests and sustains with beats and lowers volume.
+
+    chord: mp.chord
+        The chord object to apply accent to.
+    
+    rhythm: str
+        Rhythm string in the form of 'b b b b b b b b'
+    
+    bars: int
+        Number of bars the rhythm should last.
+
+    high_volume: int
+        Volume of the high beats.
+        
+    low_volume: int
+        Volume of the low beats.
+        
+    bounce_low_notes: bool 
+        If True, the low notes will bounce up by 12 semitones.
+    """
+    r_list = rhythm.split()
+    new_r_list = ' '.join(['b' if x != 'b' else 'b' for x in r_list])
+    chd = chord.from_rhythm(mp.rhythm(new_r_list, bars))
+    notes = chd.notes
+    note_count = len(chord.notes)  # Number of simultaneous notes in the chord
+    rhythm_length = len(r_list)
+    bounce_counter = 0
+    
+    for i in range(0, len(notes), note_count):
+        chunk_index = (i // note_count) % rhythm_length
+
+        for j in range(note_count):
+            if r_list[chunk_index] == 'b':
+                notes[i + j].set_volume(high_volume)
+            else:
+                notes[i + j].set_volume(low_volume)
+                if bounce_low_notes == True:
+                    if bounce_pattern == 'octave':
+                        notes[i + j] += 12
+                    
+                    elif bounce_pattern == 'fifth':
+                        if bounce_counter % 2 == 0:
+                            notes[i + j] += 7
+                        else:
+                            notes[i + j] += 12
+                        bounce_counter += 1
+
+                    else:
+                        raise ValueError(f'Bounce pattern {bounce_pattern} not supported.')
+
+    return chd
+
+
+
+def clamp_chord_pattern(chord_obj, pattern):
+    """ 
+    Certain patterns cannto be applied to chords if they contain notes outside the chord range.
+    This function will clamp the pattern to the chord range. 
+
+    EG: 
+    Cmaj : [1, 2.2, 3.1, 4.2] >> [1, 2.2, 3.1, 3.2]
+    """
+    n_notes = len(chord_obj.notes)
+    clamped_pattern = []
+
+    for index in pattern:
+        # Clamp the index to the valid range [1, n_notes]
+        if isinstance(index, float):
+            base_note = int(index)  # Get the base note index (before the decimal point)
+            fractional_part = index - base_note  # Keep the fractional part
+            base_note = max(1, min(base_note, n_notes))  # Clamp the base note
+            clamped_index = round(base_note + fractional_part, 1)  # Recombine with the fractional part
+        else:
+            clamped_index = max(1, min(index, n_notes))  # Clamp the integer index
+
+        clamped_pattern.append(clamped_index)
+
+    return clamped_pattern
 
 
 
