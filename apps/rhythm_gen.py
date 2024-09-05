@@ -228,6 +228,9 @@ def advanced_rhythm_part():
             state['chord_enhancer_settings']['chord_accent'] = selected_accent
             state['chord_enhancer_settings']['chord_bars'] = selected_bars
 
+            if selected_pattern not in [None, []]: 
+                st.info('Patterns are selected. Rhythm will be ignored.')
+
 
     with st.expander('Bass settings', expanded=True):
         selected_bs_chords = st.multiselect('Select chords', options=chord_display_names, key='bass_selected_chords', help='Leave blank to apply to all chords')
