@@ -228,6 +228,9 @@ def advanced_rhythm_part():
             state['chord_enhancer_settings']['chord_accent'] = selected_accent
             state['chord_enhancer_settings']['chord_bars'] = selected_bars
 
+
+            if selected_indices in [None, []]:
+                st.info('No chords selected. Will apply pattern or rhythm to all chords.')
             if selected_pattern not in [None, []]: 
                 st.info('Patterns are selected. Rhythm will be ignored.')
 
@@ -247,6 +250,9 @@ def advanced_rhythm_part():
             state['chord_enhancer_settings']['bass_selected_indices'] = selected_indices
             state['chord_enhancer_settings']['bass_rhythm'] = selected_bass_rhythm
             state['chord_enhancer_settings']['bass_accent'] = selected_accent
+
+            if selected_indices in [None, []]:
+                st.info('No chords selected. Will apply pattern or rhythm to all chords.')
 
 
     if state['chord_enhancer_settings'] != {}:
