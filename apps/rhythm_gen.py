@@ -135,7 +135,7 @@ def rhythm_chord_part():
 #-----
 @st.experimental_fragment
 def adv_part_contents_and_settings():
-    t1, t2 = st.tabs(['Chord Content', 'Selected settings'])
+    t1, t2 = st.tabs(['Chord Content', 'Placeholder'])
     with t1:
         if state['enhanced_chord_dict'] == {}:
             st.write('No chords added yet.')
@@ -165,9 +165,6 @@ def adv_part_contents_and_settings():
                 state['enhanced_chord_dict'] = {}
                 st.rerun()
 
-    with t2:
-        if state['chord_enhancer_settings'] != {}:
-            st.write(state['chord_enhancer_settings'])
 
 
 def advanced_rhythm_part():
@@ -255,63 +252,70 @@ def advanced_rhythm_part():
                 st.info('No chords selected. Will apply pattern or rhythm to all chords.')
 
 
+
+
     if state['chord_enhancer_settings'] != {}:
         with st.expander('Generate chord', expanded=True):
+            t1, t2 = st.tabs(['Generate', 'View settings']) 
+
         
-            button = st.button('Generate chord')
-            if button:
-                chord_rhythm = state['chord_enhancer_settings'].get('chord_rhythm', None)
-                chord_accent = state['chord_enhancer_settings'].get('chord_accent', None)
-                chord_bars = state['chord_enhancer_settings'].get('chord_bars', None)
-                chord_indices = state['chord_enhancer_settings'].get('chord_selected_indices', None)
-                chord_pattern = state['chord_enhancer_settings'].get('chord_pattern', None)
-                chord_rr = state['chord_enhancer_settings'].get('chord_round_robin', None)
+            with t1: 
+                button = st.button('Generate chord')
+                if button:
+                    chord_rhythm = state['chord_enhancer_settings'].get('chord_rhythm', None)
+                    chord_accent = state['chord_enhancer_settings'].get('chord_accent', None)
+                    chord_bars = state['chord_enhancer_settings'].get('chord_bars', None)
+                    chord_indices = state['chord_enhancer_settings'].get('chord_selected_indices', None)
+                    chord_pattern = state['chord_enhancer_settings'].get('chord_pattern', None)
+                    chord_rr = state['chord_enhancer_settings'].get('chord_round_robin', None)
 
-                bass_rhythm = state['chord_enhancer_settings'].get('bass_rhythm', None)
-                bass_accent = state['chord_enhancer_settings'].get('bass_accent', None)
-                bass_indices = state['chord_enhancer_settings'].get('bass_selected_indices', None)
+                    bass_rhythm = state['chord_enhancer_settings'].get('bass_rhythm', None)
+                    bass_accent = state['chord_enhancer_settings'].get('bass_accent', None)
+                    bass_indices = state['chord_enhancer_settings'].get('bass_selected_indices', None)
 
-                # map settings
-                pattern_list = [pattern_name_map[p]['pattern'] for p in chord_pattern]
-                interval_list = [pattern_name_map[p]['intervals'] for p in chord_pattern]
-                cr_str = rhythm_name_map[chord_rhythm]['rhythm']
-                br_str = rhythm_name_map[bass_rhythm]['rhythm']
+                    # map settings
+                    pattern_list = [pattern_name_map[p]['pattern'] for p in chord_pattern]
+                    interval_list = [pattern_name_map[p]['intervals'] for p in chord_pattern]
+                    cr_str = rhythm_name_map[chord_rhythm]['rhythm']
+                    br_str = rhythm_name_map[bass_rhythm]['rhythm']
 
-                ce = ChordEnhancer()
-                for dict in state['enhanced_chord_dict']:
-                    ce.add_chord(chord=mp.C(dict['chord_name']), chord_name=dict['chord_name']) 
+                    ce = ChordEnhancer()
+                    for dict in state['enhanced_chord_dict']:
+                        ce.add_chord(chord=mp.C(dict['chord_name']), chord_name=dict['chord_name']) 
 
-                if chord_pattern in [None, []]:
-                    ce.apply_rhythm(rhythm_str=cr_str, accent=chord_accent, bars=chord_bars, indices=chord_indices)
-                
-                if pattern_list not in [None, []]:
-                    ce.apply_patterns(indices=chord_indices, pattern_list=pattern_list, interval_list=interval_list, round_robin=chord_rr)
-
-                if bass_rhythm not in [None, []]:
-                    ce.apply_bass(indices=bass_indices, rhythm=br_str, accent=bass_accent, pitch_diff=-2)
-                ce.reconcile_length()
-
-                if ce.chord_df.empty:
-                    st.error('No chords were generated. Check your settings.')
-                    return
-                co = mp.chord('')
-                for c in ce.chord_df['chord_obj']:
-                    co += c
-                state['generated_enhanced_chord'] = co
-
-
-            if state['generated_enhanced_chord'] != {}:
-                co = state['generated_enhanced_chord']
-                play_button = st.button('Play')
-                if play_button:
-                    audio = play_audio(co)
-                    if audio is not None:
-                        st.audio(audio)
+                    if chord_pattern in [None, []]:
+                        ce.apply_rhythm(rhythm_str=cr_str, accent=chord_accent, bars=chord_bars, indices=chord_indices)
                     
-                    # Generate MIDI bytes
-                    midi_fname = f'untitled.mid'
-                    midi_bytes = export_to_midi_as_bytes(co)
-                    download_midi_no_refresh(midi_fname, midi_bytes)
+                    if pattern_list not in [None, []]:
+                        ce.apply_patterns(indices=chord_indices, pattern_list=pattern_list, interval_list=interval_list, round_robin=chord_rr)
+
+                    if bass_rhythm not in [None, []]:
+                        ce.apply_bass(indices=bass_indices, rhythm=br_str, accent=bass_accent, pitch_diff=-2)
+                    ce.reconcile_length()
+
+                    if ce.chord_df.empty:
+                        st.error('No chords were generated. Check your settings.')
+                        return
+                    co = mp.chord('')
+                    for c in ce.chord_df['chord_obj']:
+                        co += c
+                    state['generated_enhanced_chord'] = co
 
 
-    
+                if state['generated_enhanced_chord'] != {}:
+                    co = state['generated_enhanced_chord']
+                    play_button = st.button('Play')
+                    if play_button:
+                        audio = play_audio(co)
+                        if audio is not None:
+                            st.audio(audio)
+                        
+                        # Generate MIDI bytes
+                        midi_fname = f'untitled.mid'
+                        midi_bytes = export_to_midi_as_bytes(co)
+                        download_midi_no_refresh(midi_fname, midi_bytes)
+
+
+            with t2:
+                if state['chord_enhancer_settings'] != {}:
+                    st.write(state['chord_enhancer_settings'])
