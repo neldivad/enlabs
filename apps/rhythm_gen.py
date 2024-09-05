@@ -24,6 +24,7 @@ def main():
     state['r_select_rhythm'] = state.get('r_select_rhythm', {})
     state['enhanced_chord_dict'] = state.get('enhanced_chord_dict', {})
     state['chord_enhancer_settings'] = state.get('chord_enhancer_settings', {})
+    state['generated_enhanced_chord'] = state.get('generated_enhanced_chord', {})
 
     st.title('Rhythm Generator')
     with st.sidebar:
